@@ -1,0 +1,31 @@
+.hero-section {
+    background-color: #f8f9fc;
+}
+
+.hero-section h1 {
+    line-height: 1.2;
+}
+
+.hero-section p {
+    font-size: 1.1rem;
+}
+
+.btn-primary {
+    background-color: #0056D2;
+    border-color: #0056D2;
+}
+
+.btn-primary:hover {
+    background-color: #0041a8;
+    border-color: #0041a8;
+}
+
+.btn-outline-primary {
+    border-color: #0056D2;
+    color: #0056D2;
+}
+
+.btn-outline-primary:hover {
+    background-color: #0056D2;
+    color: #fff;
+}

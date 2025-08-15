@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PitMap - User Reporting</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style4.css">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-primary" href="index.html">
+            <img src="https://img.icons8.com/ios-filled/50/0056D2/road.png" width="25" height="25" class="me-2">
+            PitMap
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link fw-semibold" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link fw-semibold" href="features.html">Features</a></li>
+                <li class="nav-item"><a class="nav-link fw-semibold" href="authority.html">Authority</a></li>
+                <li class="nav-item"><a class="nav-link fw-semibold" href="contactus.html">Contact</a></li>
+                <li class="nav-item"><a class="nav-link active fw-semibold" href="getstarted.html">User Map</a></li>
+            </ul>
+            <a href="signin.html" class="btn btn-primary ms-3 fw-bold">Sign In</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Header -->
+<section class="py-4 bg-light border-bottom">
+    <div class="container">
+        <h2 class="fw-bold text-primary">Report a Pothole</h2>
+        <p class="text-muted">Click on the map to tag a pothole location and submit a report.</p>
+    </div>
+</section>
+
+<!-- Map & Form -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Map -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white fw-bold">Live Map</div>
+                    <div class="card-body p-0">
+                        <div id="map" style="height:500px;"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Form -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white fw-bold">Pothole Report Form</div>
+                    <div class="card-body">
+                        <form id="reportForm">
+                            <div class="mb-3">
+                                <label class="form-label">Latitude</label>
+                                <input type="text" id="lat" class="form-control" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Longitude</label>
+                                <input type="text" id="lng" class="form-control" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea id="desc" class="form-control" placeholder="Describe the pothole"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Severity</label>
+                                <select id="severity" class="form-select">
+                                    <option value="Low">Low</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="High">High</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Submit Report</button>
+                        </form>
+                        <div id="successMsg" class="alert alert-success mt-3 d-none">
+                            ✅ Pothole reported successfully!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<!-- Map Script -->
+<script>
+    // Initialize map
+    var map = L.map('map').setView([20.5937, 78.9629], 5); // Center on India
+
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    var marker;
+
+    // Map click event
+    map.on('click', function(e) {
+        var lat = e.latlng.lat.toFixed(6);
+        var lng = e.latlng.lng.toFixed(6);
+
+        document.getElementById("lat").value = lat;
+        document.getElementById("lng").value = lng;
+
+        // Remove old marker
+        if (marker) {
+            map.removeLayer(marker);
+        }
+
+        // Add marker
+        marker = L.marker([lat, lng]).addTo(map)
+                 .bindPopup("Selected Location").openPopup();
+    });
+
+    // Form submit
+    document.getElementById("reportForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        document.getElementById("successMsg").classList.remove("d-none");
+
+        // Simulate sending data to server
+        console.log({
+            lat: document.getElementById("lat").value,
+            lng: document.getElementById("lng").value,
+            description: document.getElementById("desc").value,
+            severity: document.getElementById("severity").value
+        });
+
+        // Reset form
+        this.reset();
+        marker && map.removeLayer(marker);
+    });
+</script>
+
+</body>
+</html>

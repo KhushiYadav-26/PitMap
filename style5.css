@@ -1,0 +1,11 @@
+section h2 {
+    font-size: 2rem;
+}
+
+section p, section li {
+    font-size: 1.05rem;
+}
+
+img {
+    max-width: 64px;
+}
